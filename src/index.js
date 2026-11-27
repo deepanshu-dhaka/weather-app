@@ -81,7 +81,7 @@ const textContainer = document.createElement("div")
 textContainer.classList.add("text-container")
 body.appendChild(textContainer);
 
-async function displayWeatherOnScreen(url) {
+async function displayWeatherOnScreen(url, unit) {
     try {
         const weatherData = await fetchVisualCrossingWeatherAPI(url)
 
@@ -89,11 +89,15 @@ async function displayWeatherOnScreen(url) {
         //         if (weatherData.currentConditions.icon === icon)
         //    })
 
+        const todayTempHeading = document.createElement("h2")
+        todayTempHeading.textContent = `Today's Weather(${weatherData.days[0].datetime}) in ${unit}`;
+        textContainer.appendChild(todayTempHeading)
 
         const placeName = document.createElement("p")
         placeName.textContent = `Resolved Address: ${weatherData.resolvedAddress
             }`
         textContainer.appendChild(placeName)
+
 
         const maxTemp = document.createElement("p");
         maxTemp.textContent = `Max Temperature: ${weatherData.days[0].tempmax}`
@@ -134,14 +138,14 @@ submitBtn.addEventListener("click", (event) => {
         console.log(cityName)
         url = getURL(cityName, "us")
         displayWeatherOnConsole(url);
-        displayWeatherOnScreen(url);
+        displayWeatherOnScreen(url, "Fahrenheit ");
     }
     else {
 
         url = getURL(cityName, "metric");
         // fetchVisualCrossingWeatherAPI(url);
         displayWeatherOnConsole(url);
-        displayWeatherOnScreen(url);
+        displayWeatherOnScreen(url, "Celsius ");
     }
     formRef.reset();
 })
